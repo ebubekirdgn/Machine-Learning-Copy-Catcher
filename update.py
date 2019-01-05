@@ -3,38 +3,34 @@
 Spyder Editor
 This is a temporary script file.
 """
-
-from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
-import numpy as np
-import pandas as pd
-
-import matplotlib.pyplot as plt
 from sklearn.neighbors import NearestNeighbors
 import re
 from sklearn.feature_extraction.text import CountVectorizer
 from TurkishStemmer import TurkishStemmer
 from nltk.corpus import stopwords
-from sklearn.feature_extraction.text import CountVectorizer
 stemmer = TurkishStemmer()
 vectorizer = CountVectorizer()
 # %% Methodlar baslangic
 
-word_list = [] # kelimelerin tek yazilmasi için
-examples = []
-np_exmaples = []
- 
-myWords=['ali','bugun','okula','erken','ve','veya','gelmedi','sınıfa']
-
-conjunctions = set(stopwords.words('turkish'))
 x= None
 dizi=[]
 testSayisi = None
+
 # %% Methodlar
 
+def cleanStopWords(words):
+    stop_words = set(stopwords.words('turkish'))
+    cleanList = []
+    for word in words:
+        if word not in stop_words:
+            cleanList.append(word)
+    return cleanList
+
+
 def testingObject():
-    global x,icerik, testSayisi
+    global x,icerik, testSayisi,liste
     files = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
     i = 1
     
@@ -42,25 +38,28 @@ def testingObject():
         Lb1.insert(i, file)
         file_content = open(file, "r").read()
         content = file_content.lower()
-        kokDizi = re.findall(r'\w+', content)
- 
-        icerik=' '.join(kokDizi)
+        words = re.findall(r'\w+', content)
+        liste = cleanStopWords(words)
+         
+        icerik=' '.join(liste)
+        print(icerik)
         dizi.append(icerik)
+        
         testSayisi = len(dizi)
  
           
 def tutorialObject():
         global x,icerik
-      
         files = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
         i = 1
         for file in files:
             Lb1.insert(i, file)
             file_content = open(file, "r").read()
             content = file_content.lower()
-            kokDizi = re.findall(r'\w+', content)
-     
-            icerik=' '.join(kokDizi)
+            words = re.findall(r'\w+', content)
+            liste = cleanStopWords(words)
+            icerik=' '.join(liste)
+            print(icerik)
             dizi.append(icerik)
     
         x = vectorizer.fit_transform(dizi).toarray()
@@ -83,13 +82,14 @@ def resultFunction():
                     distance *= -1
                     distance *= 100
                     print("testin " +str(j)+": "+str(indice) +  " " + str(distance))
+                    
                 j += 1
             i += 1
     else:
         messagebox.showinfo("Hata Mesajı", "Test Sayısı ile K değeri eşit değil")
-# %% formu çiz
- 
-# %% Methodlar bitis
+    
+    
+# %% Form çizme
 pencere = Tk()
 pencere.title("Text Similarity 1.0")
 pencere.geometry("700x320")
