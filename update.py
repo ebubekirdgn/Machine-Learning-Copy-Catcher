@@ -3,6 +3,7 @@
 Spyder Editor
 This is a temporary script file.
 """
+from tkinter import*
 from tkinter import filedialog
 from tkinter import messagebox
  
@@ -36,7 +37,7 @@ def testingObject():
     i = 1
     
     for file in files:
-        Lb1.insert(i, file)
+        LbFile.insert(i, file)
         file_content = open(file, "r").read()
         content = file_content.lower()
         words = re.findall(r'\w+', content)
@@ -51,10 +52,11 @@ def testingObject():
           
 def tutorialObject():
         global x,icerik
+        
         files = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"), ("All Files", "*.*")))
         i = 1
         for file in files:
-            Lb1.insert(i, file)
+            LbFile.insert(i, file)
             file_content = open(file, "r").read()
             content = file_content.lower()
             words = re.findall(r'\w+', content)
@@ -102,8 +104,8 @@ uygulama.grid()
 L1 = Label(uygulama, text="Dosyalar")
 L1.grid(row=0,column=0)
 
-Lb1 = Listbox(uygulama, width = 40)
-Lb1.grid(row=1,column=0,padx=20)
+LbFile = Listbox(uygulama, width = 40)
+LbFile.grid(row=1,column=0,padx=20)
 
 btnFileTestObject = Button(uygulama, text="Test Verileri Yükle", width=20, command=testingObject)
 btnFileTestObject.grid(row=2,column=0,padx=20,pady=15)
@@ -112,8 +114,8 @@ btnFileTestObject.grid(row=2,column=0,padx=20,pady=15)
 L2 = Label(uygulama, text="Test Sonuçlari")
 L2.grid(row=0,column=1)
 
-Lb2 = Listbox(uygulama, width = 55)
-Lb2.grid(row=1,column=1,padx=60)
+LblResult = Listbox(uygulama, width = 55)
+LblResult.grid(row=1,column=1,padx=60)
 
 btnResult = Button(uygulama, text=" Sonuçları Göster ", width=20, command=resultFunction)
 btnResult.grid(row=2,column=1,padx=20,pady=15)
