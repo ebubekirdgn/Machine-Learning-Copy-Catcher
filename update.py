@@ -9,6 +9,7 @@ from tkinter import messagebox
 import codecs
 from sklearn.neighbors import NearestNeighbors
 import re
+import os
 from sklearn.feature_extraction.text import CountVectorizer
 from TurkishStemmer import TurkishStemmer
 from nltk.corpus import stopwords
@@ -19,7 +20,8 @@ vectorizer = CountVectorizer()
 x= None
 dizi=[]
 testSayisi = None
-
+testingFiles=[]
+tutorialFiles=[]
 # %% Methodlar
 
 def cleanStopWords(words):
@@ -32,34 +34,30 @@ def cleanStopWords(words):
 
 
 def testingObject():
-    global x,icerik, testSayisi,liste
-
- 
+    global x,icerik, testSayisi,liste,testingFiles
     #Encoding yapılacak
-    files = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"),("Doc files", "*.doc"),("Doc files", "*.docx"), ("Doc files", "*.docx"),("All Files", "*.*")))
+    testingFiles = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"),("Doc files", "*.doc"),("Doc files", "*.docx"), ("Doc files", "*.docx"),("All Files", "*.*")))
     i = 1
     
-    for file in files:
-        LbFile.insert(i, file)
+    for file in testingFiles:
+        LbFile.insert(i,"Test Verisi : " + os.path.basename(file))
+        
         file_content = open(file, "r").read()
         content = file_content.lower()
         words = re.findall(r'\w+', content)
-       
-        liste = cleanStopWords(words)
-         
+        liste = cleanStopWords(words)         
         icerik=' '.join(liste)
         print(icerik)
-        dizi.append(icerik)
-        
+        dizi.append(icerik)        
         testSayisi = len(dizi)
  
 def tutorialObject():
-        global x,icerik
+        global x,icerik,tutorialFiles
         
-        files = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"),("Doc files", "*.doc"),("Doc files", "*.docx"), ("Doc files", "*.docx"),("All Files", "*.*")))
-        i = 1
-        for file in files:
-            LbFile.insert(i, file)
+        tutorialFiles = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"),("Doc files", "*.doc"),("Doc files", "*.docx"), ("Doc files", "*.docx"),("All Files", "*.*")))
+        i = 2
+        for file in tutorialFiles:
+            LbFile.insert(i, "Eğitim Verisi : " + os.path.basename(file))
             file_content = open(file, "r").read()
             content = file_content.lower()
             words = re.findall(r'\w+', content)
@@ -72,8 +70,9 @@ def tutorialObject():
         print(x)
         
 def resultFunction():
-    global x, testSayisi
+    global x, testSayisi,dizi
     #n_neighbors=2 klavyeden alıcak
+     
     number = int(e1.get())
     print(number)
     if testSayisi == number:
@@ -88,12 +87,14 @@ def resultFunction():
                     distance *= -1
                     distance *= 100
                     print("testing " +str(j)+": "+str(indice) +  " " + str(distance))
-                    #Lb2.insert("testing " +str(j)+": "+str(indice) +  " " + str(distance))
-                    #
+                    LblResult.insert(str(j),str(indice) + " : " + str(distance))
+                    print(os.path.basename(testingFiles[j]))
+                    print(os.path.basename(tutorialFiles[indice[i]]))   
                 j += 1
             i += 1
     else:
         messagebox.showinfo("Hata Mesajı", "Test Sayısı ile K değeri eşit değil")
+    
     
 # %% Form çizme
 pencere = Tk()
