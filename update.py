@@ -33,7 +33,7 @@ def cleanStopWords(words):
 def testingObject():
     global x,icerik, testSayisi,liste
 
- 
+   
     #Encoding yapılacak
     files = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"),("Doc files", "*.doc"),("Doc files", "*.docx"), ("Doc files", "*.docx"),("All Files", "*.*")))
     i = 1
@@ -43,15 +43,14 @@ def testingObject():
         file_content = open(file, 'r',encoding='utf8').read()        
         content = file_content.lower()
         words = re.findall(r'\w+', content)
-       
-        liste = cleanStopWords(words)
-         
+        liste = cleanStopWords(words)         
         icerik=' '.join(liste)
         print(icerik)
         dizi.append(icerik)
         
         testSayisi = len(dizi)
  
+      
           
 def tutorialObject():
         global x,icerik
