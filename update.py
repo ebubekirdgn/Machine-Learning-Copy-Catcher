@@ -6,7 +6,7 @@ This is a temporary script file.
 from tkinter import*
 from tkinter import filedialog
 from tkinter import messagebox
- 
+import codecs
 from sklearn.neighbors import NearestNeighbors
 import re
 from sklearn.feature_extraction.text import CountVectorizer
@@ -33,14 +33,18 @@ def cleanStopWords(words):
 
 def testingObject():
     global x,icerik, testSayisi,liste
-    files = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"), ("All Files", "*.*")))
+
+ 
+    #Encoding yapılacak
+    files = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"),("Doc files", "*.doc"),("Doc files", "*.docx"), ("Doc files", "*.docx"),("All Files", "*.*")))
     i = 1
     
     for file in files:
         LbFile.insert(i, file)
-        file_content = open(file, "r").read()
+        file_content = open(file, 'r',encoding='utf8').read()        
         content = file_content.lower()
         words = re.findall(r'\w+', content)
+       
         liste = cleanStopWords(words)
          
         icerik=' '.join(liste)
@@ -53,11 +57,11 @@ def testingObject():
 def tutorialObject():
         global x,icerik
         
-        files = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"), ("All Files", "*.*")))
+        files = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"),("Doc files", "*.doc"),("Doc files", "*.docx"), ("Doc files", "*.docx"),("All Files", "*.*")))
         i = 1
         for file in files:
             LbFile.insert(i, file)
-            file_content = open(file, "r").read()
+            file_content = open(file, 'r',encoding='utf8').read()  
             content = file_content.lower()
             words = re.findall(r'\w+', content)
             liste = cleanStopWords(words)
@@ -91,7 +95,6 @@ def resultFunction():
             i += 1
     else:
         messagebox.showinfo("Hata Mesajı", "Test Sayısı ile K değeri eşit değil")
-    
     
 # %% Form çizme
 pencere = Tk()
