@@ -6,7 +6,6 @@ This is a temporary script file.
 from tkinter import*
 from tkinter import filedialog
 from tkinter import messagebox
-import codecs
 from sklearn.neighbors import NearestNeighbors
 import re
 from sklearn.feature_extraction.text import CountVectorizer
