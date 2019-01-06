@@ -6,6 +6,7 @@ This is a temporary script file.
 from tkinter import*
 from tkinter import filedialog
 from tkinter import messagebox
+import codecs
 from sklearn.neighbors import NearestNeighbors
 import re
 from sklearn.feature_extraction.text import CountVectorizer
@@ -33,25 +34,25 @@ def cleanStopWords(words):
 def testingObject():
     global x,icerik, testSayisi,liste
 
-   
+ 
     #Encoding yapılacak
     files = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"),("Doc files", "*.doc"),("Doc files", "*.docx"), ("Doc files", "*.docx"),("All Files", "*.*")))
     i = 1
     
     for file in files:
         LbFile.insert(i, file)
-        file_content = open(file, 'r',encoding='utf8').read()        
+        file_content = open(file, "r").read()
         content = file_content.lower()
         words = re.findall(r'\w+', content)
-        liste = cleanStopWords(words)         
+       
+        liste = cleanStopWords(words)
+         
         icerik=' '.join(liste)
         print(icerik)
         dizi.append(icerik)
         
         testSayisi = len(dizi)
  
-      
-          
 def tutorialObject():
         global x,icerik
         
@@ -59,7 +60,7 @@ def tutorialObject():
         i = 1
         for file in files:
             LbFile.insert(i, file)
-            file_content = open(file, 'r',encoding='utf8').read()  
+            file_content = open(file, "r").read()
             content = file_content.lower()
             words = re.findall(r'\w+', content)
             liste = cleanStopWords(words)
