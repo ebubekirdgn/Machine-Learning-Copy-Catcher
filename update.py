@@ -15,7 +15,7 @@ from TurkishStemmer import TurkishStemmer
 from nltk.corpus import stopwords
 stemmer = TurkishStemmer()
 vectorizer = CountVectorizer()
-
+from sklearn.decomposition import PCA
 # %% Methodlar baslangic
 
 x= None
@@ -55,7 +55,6 @@ def testingObject():
  
 def tutorialObject():
         global x,icerik,tutorialFiles
-        
         tutorialFiles = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"),("Doc files", "*.doc"),("Doc files", "*.docx"), ("Doc files", "*.docx"),("All Files", "*.*")))
         for file in tutorialFiles:
             LbFile.insert(END, "Eğitim Verisi : " + os.path.basename(file))
@@ -71,8 +70,8 @@ def tutorialObject():
         print(x)
         
 def resultFunction():
+    LblResult.delete(0,END)
     global x, testSayisi,dizi
-    #n_neighbors=2 klavyeden alıcak
      
     number = int(e1.get())
     print(number)
@@ -87,26 +86,17 @@ def resultFunction():
                     distance = distance -1
                     distance *= -1
                     distance *= 100
-                    #print("testing " +str(j)+": "+str(indice) +  " " + str(distance))
-                    
-                
-                    #LblResult.insert(str(j),str(indice) + " : " + str(distance))
                     z=0
                     for k in indice:
                             print()
-                            LblResult.insert(END,"Test : " + os.path.basename(testingFiles[i]) + " dosyasının " + os.path.basename(tutorialFiles[k])+" "+str(distance[z]))
+                            LblResult.insert(END,os.path.basename(testingFiles[i]) + " dosyası " + os.path.basename(tutorialFiles[k])+" dosyasına "+" % "+str(distance[z]) + " benziyor.")
                             z+=1
                     LblResult.insert(END,"\n")
-                           
-                     
-                    
-                    
                 j += 1
             i += 1
     else:
         messagebox.showinfo("Hata Mesajı", "K değeri ; Eğitim verisi sayısından küçük ya da eşit olmalıdır.")
-    
-    
+     
 # %% Form çizme
 pencere = Tk()
 pencere.title("Text Similarity 1.0")
@@ -121,10 +111,9 @@ L1.grid(row=0,column=0)
 LbFile = Listbox(uygulama, width = 40)
 LbFile.grid(row=1,column=0,padx=20)
 
-btnFileTestObject = Button(uygulama, text="Test Verileri Yükle", width=20, command=testingObject)
-btnFileTestObject.grid(row=2,column=0,padx=20,pady=15)
+btnFileTest = Button(uygulama, text="Test Verileri Yükle", width=20, command=testingObject)
+btnFileTest.grid(row=2,column=0,padx=20,pady=15)
 # %%  2.Bolme
-
 L2 = Label(uygulama, text="Test Sonuçlari")
 L2.grid(row=0,column=1)
 
@@ -142,6 +131,5 @@ e1.grid(row=4, column=1)
 
 btnTutorial = Button(uygulama, text="Eğitim Verileri Yükle", width=20, command=tutorialObject)
 btnTutorial.grid(row=3,column=0,padx=10,pady=5)
-
 # %% formu çiz
 pencere.mainloop()
