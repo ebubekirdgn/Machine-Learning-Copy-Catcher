@@ -15,6 +15,7 @@ from TurkishStemmer import TurkishStemmer
 from nltk.corpus import stopwords
 stemmer = TurkishStemmer()
 vectorizer = CountVectorizer()
+from sklearn.decomposition import PCA
 # %% Methodlar baslangic
 
 x= None
@@ -32,17 +33,18 @@ def cleanStopWords(words):
             cleanList.append(word)
     return cleanList
 
-
 def testingObject():
     global x,icerik, testSayisi,liste,testingFiles
     #Encoding yapılacak
     testingFiles = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"),("Doc files", "*.doc"),("Doc files", "*.docx"), ("Doc files", "*.docx"),("All Files", "*.*")))
     i = 1
     
+    print(testingFiles)
+    
     for file in testingFiles:
-        LbFile.insert(i,"Test Verisi : " + os.path.basename(file))
+        LbFile.insert(END,"Test Verisi : " + os.path.basename(file))
         
-        file_content = open(file, "r").read()
+        file_content = codecs.open(file,'r',encoding='utf8').read()
         content = file_content.lower()
         words = re.findall(r'\w+', content)
         liste = cleanStopWords(words)         
@@ -55,10 +57,9 @@ def tutorialObject():
         global x,icerik,tutorialFiles
         
         tutorialFiles = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"),("Doc files", "*.doc"),("Doc files", "*.docx"), ("Doc files", "*.docx"),("All Files", "*.*")))
-        i = 2
         for file in tutorialFiles:
-            LbFile.insert(i, "Eğitim Verisi : " + os.path.basename(file))
-            file_content = open(file, "r").read()
+            LbFile.insert(END, "Eğitim Verisi : " + os.path.basename(file))
+            file_content = codecs.open(file,'r',encoding='utf8').read()
             content = file_content.lower()
             words = re.findall(r'\w+', content)
             liste = cleanStopWords(words)
@@ -75,7 +76,7 @@ def resultFunction():
      
     number = int(e1.get())
     print(number)
-    if testSayisi == number:
+    if len(tutorialFiles) >= number:
         nbrs = NearestNeighbors(n_neighbors=number, algorithm='auto', metric='cosine').fit(x[testSayisi:])
         distances, indices = nbrs.kneighbors(x[0:testSayisi])
         i = 0
@@ -86,14 +87,24 @@ def resultFunction():
                     distance = distance -1
                     distance *= -1
                     distance *= 100
-                    print("testing " +str(j)+": "+str(indice) +  " " + str(distance))
-                    LblResult.insert(str(j),str(indice) + " : " + str(distance))
-                    print(os.path.basename(testingFiles[j]))
-                    print(os.path.basename(tutorialFiles[indice[i]]))   
+                    #print("testing " +str(j)+": "+str(indice) +  " " + str(distance))
+                    
+                
+                    #LblResult.insert(str(j),str(indice) + " : " + str(distance))
+                    z=0
+                    for k in indice:
+                            print()
+                            LblResult.insert(END,"Test : " + os.path.basename(testingFiles[i]) + " dosyasının " + os.path.basename(tutorialFiles[k])+" "+str(distance[z]))
+                            z+=1
+                    LblResult.insert(END,"\n")
+                           
+                     
+                    
+                    
                 j += 1
             i += 1
     else:
-        messagebox.showinfo("Hata Mesajı", "Test Sayısı ile K değeri eşit değil")
+        messagebox.showinfo("Hata Mesajı", "K değeri ; Eğitim verisi sayısından küçük ya da eşit olmalıdır.")
     
     
 # %% Form çizme
