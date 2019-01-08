@@ -15,7 +15,7 @@ from TurkishStemmer import TurkishStemmer
 from nltk.corpus import stopwords
 stemmer = TurkishStemmer()
 vectorizer = CountVectorizer()
-from sklearn.decomposition import PCA
+
 # %% Methodlar baslangic
 
 x= None
