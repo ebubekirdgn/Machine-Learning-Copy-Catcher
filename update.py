@@ -2,6 +2,7 @@
 """
 Spyder Editor
 This is a temporary script file.
+user : EbubekirDogan
 """
 from tkinter import*
 from tkinter import filedialog
@@ -36,10 +37,7 @@ def testingObject():
     global x,cleanContent, testSayisi,cleanList,testingFiles
     #Encoding yapılacak
     testingFiles = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"),("Doc files", "*.doc"),("Doc files", "*.docx"), ("Doc files", "*.docx"),("All Files", "*.*")))
-    i = 1
-    
-    print(testingFiles)
-    
+  
     for file in testingFiles:
         LbFile.insert(END,"Test Verisi : " + os.path.basename(file))
         file_content = codecs.open(file,'r',encoding='utf8').read()
@@ -66,8 +64,7 @@ def tutorialObject():
     
         x = vectorizer.fit_transform(dizi).toarray()
         print(x)
-        
-        
+         
 def resultFunction():
     LblResult.delete(0,END)
     global x, testSayisi,dizi
