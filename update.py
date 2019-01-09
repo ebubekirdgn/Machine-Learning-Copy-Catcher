@@ -46,8 +46,8 @@ def testingObject():
         content = file_content.lower()
         words = re.findall(r'\w+', content)
         cleanList = cleanStopWords(words)         
-        cleanContent=' '.join(cleanList)
-        print(cleanContent)
+        cleanContent =' '.join(cleanList)
+        #print(cleanContent)
         dizi.append(cleanContent)        
         testSayisi = len(dizi)
  
@@ -61,7 +61,7 @@ def tutorialObject():
             words = re.findall(r'\w+', content)
             cleanList = cleanStopWords(words)
             cleanContent=' '.join(cleanList)
-            print(cleanContent)
+            #print(cleanContent)
             dizi.append(cleanContent)
     
         x = vectorizer.fit_transform(dizi).toarray()
@@ -88,7 +88,6 @@ def resultFunction():
                     z=0
                     for k in indice:
                             print()
-                            print(END,os.path.basename(testingFiles[i]) + " dosyası " + os.path.basename(tutorialFiles[k])+" dosyasına "+" % "+str(abs(distance[z])) + " benziyor.")
                             LblResult.insert(END,os.path.basename(testingFiles[i]) + " dosyası " + os.path.basename(tutorialFiles[k])+" dosyasına "+" % "+str(abs(distance[z])) + " benziyor.")
                             z+=1
                     LblResult.insert(END,"\n")
