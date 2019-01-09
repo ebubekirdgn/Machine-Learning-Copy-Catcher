@@ -17,7 +17,6 @@ stemmer = TurkishStemmer()
 vectorizer = CountVectorizer()
 from sklearn.decomposition import PCA
 # %% Methodlar baslangic
-
 x= None
 dizi=[]
 testSayisi = None
@@ -34,7 +33,7 @@ def cleanStopWords(words):
     return cleanList
 
 def testingObject():
-    global x,icerik, testSayisi,liste,testingFiles
+    global x,cleanContent, testSayisi,cleanList,testingFiles
     #Encoding yapılacak
     testingFiles = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"),("Doc files", "*.doc"),("Doc files", "*.docx"), ("Doc files", "*.docx"),("All Files", "*.*")))
     i = 1
@@ -43,36 +42,36 @@ def testingObject():
     
     for file in testingFiles:
         LbFile.insert(END,"Test Verisi : " + os.path.basename(file))
-        
         file_content = codecs.open(file,'r',encoding='utf8').read()
         content = file_content.lower()
         words = re.findall(r'\w+', content)
-        liste = cleanStopWords(words)         
-        icerik=' '.join(liste)
-        print(icerik)
-        dizi.append(icerik)        
+        cleanList = cleanStopWords(words)         
+        cleanContent=' '.join(cleanList)
+        print(cleanContent)
+        dizi.append(cleanContent)        
         testSayisi = len(dizi)
  
 def tutorialObject():
-        global x,icerik,tutorialFiles
+        global x,cleanContent,tutorialFiles,cleanList
         tutorialFiles = filedialog.askopenfilenames(initialdir="/", title="Select file",filetypes=(("Text files", "*.txt"),("Doc files", "*.doc"),("Doc files", "*.docx"), ("Doc files", "*.docx"),("All Files", "*.*")))
         for file in tutorialFiles:
             LbFile.insert(END, "Eğitim Verisi : " + os.path.basename(file))
             file_content = codecs.open(file,'r',encoding='utf8').read()
             content = file_content.lower()
             words = re.findall(r'\w+', content)
-            liste = cleanStopWords(words)
-            icerik=' '.join(liste)
-            print(icerik)
-            dizi.append(icerik)
+            cleanList = cleanStopWords(words)
+            cleanContent=' '.join(cleanList)
+            print(cleanContent)
+            dizi.append(cleanContent)
     
         x = vectorizer.fit_transform(dizi).toarray()
         print(x)
         
+        
 def resultFunction():
     LblResult.delete(0,END)
     global x, testSayisi,dizi
-     
+    x = PCA().fit_transform(x)
     number = int(e1.get())
     print(number)
     if len(tutorialFiles) >= number:
@@ -89,7 +88,8 @@ def resultFunction():
                     z=0
                     for k in indice:
                             print()
-                            LblResult.insert(END,os.path.basename(testingFiles[i]) + " dosyası " + os.path.basename(tutorialFiles[k])+" dosyasına "+" % "+str(distance[z]) + " benziyor.")
+                            print(END,os.path.basename(testingFiles[i]) + " dosyası " + os.path.basename(tutorialFiles[k])+" dosyasına "+" % "+str(abs(distance[z])) + " benziyor.")
+                            LblResult.insert(END,os.path.basename(testingFiles[i]) + " dosyası " + os.path.basename(tutorialFiles[k])+" dosyasına "+" % "+str(abs(distance[z])) + " benziyor.")
                             z+=1
                     LblResult.insert(END,"\n")
                 j += 1
